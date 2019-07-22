@@ -7,36 +7,36 @@ ENV GRADLE_VERSION 5.5.1
 
 ARG GRADLE_DOWNLOAD_SHA256=222a03fcf2fcaf3691767ce9549f78ebd4a77e73f9e23a396899fb70b420cd00
 RUN set -o errexit -o nounset \
-	&& echo "Installing dependencies" \
-	&& apk add --no-cache \
-		bash \
-		libstdc++ \
-	\
-	&& echo "Installing build dependencies" \
-	&& apk add --no-cache --virtual .build-deps \
-		ca-certificates \
-		openssl \
-		unzip \
-	\
-	&& echo "Downloading Gradle" \
-	&& wget -O gradle.zip "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" \
-	\
-	&& echo "Checking download hash" \
-	&& echo "${GRADLE_DOWNLOAD_SHA256} *gradle.zip" | sha256sum -c - \
-	\
-	&& echo "Installing Gradle" \
-	&& unzip gradle.zip \
-	&& rm gradle.zip \
-	&& mv "gradle-${GRADLE_VERSION}" "${GRADLE_HOME}/" \
-	&& ln -s "${GRADLE_HOME}/bin/gradle" /usr/bin/gradle \
-	\
-	&& apk del .build-deps \
-	\
-	&& echo "Adding gradle user and group" \
-	&& addgroup -S -g 1000 gradle \
-	&& adduser -D -S -G gradle -u 1000 -s /bin/ash gradle \
-	&& mkdir /home/gradle/.gradle \
-	&& chown -R gradle:gradle /home/gradle
+  && echo "Installing dependencies" \
+  && apk add --no-cache \
+    bash \
+    libstdc++ \
+  \
+  && echo "Installing build dependencies" \
+  && apk add --no-cache --virtual .build-deps \
+    ca-certificates \
+    openssl \
+    unzip \
+  \
+  && echo "Downloading Gradle" \
+  && wget -O gradle.zip "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" \
+  \
+  && echo "Checking download hash" \
+  && echo "${GRADLE_DOWNLOAD_SHA256} *gradle.zip" | sha256sum -c - \
+  \
+  && echo "Installing Gradle" \
+  && unzip gradle.zip \
+  && rm gradle.zip \
+  && mv "gradle-${GRADLE_VERSION}" "${GRADLE_HOME}/" \
+  && ln -s "${GRADLE_HOME}/bin/gradle" /usr/bin/gradle \
+  \
+  && apk del .build-deps \
+  \
+  && echo "Adding gradle user and group" \
+  && addgroup -S -g 1000 gradle \
+  && adduser -D -S -G gradle -u 1000 -s /bin/ash gradle \
+  && mkdir /home/gradle/.gradle \
+  && chown -R gradle:gradle /home/gradle
 
 
 
@@ -57,6 +57,12 @@ RUN addgroup -g 1001 node \
         linux-headers \
         make \
         python \
+        bash \
+        lcms2-dev \
+        libpng-dev \
+        make \
+        autoconf \
+        automake \
   # gpg keys listed at https://github.com/nodejs/node#release-team
   && for key in \
     4ED778F539E3634C779C87C6D7062848A1AB005C \
@@ -116,5 +122,5 @@ VOLUME "/home/gradle/.gradle"
 WORKDIR /home/gradle
 
 RUN set -o errexit -o nounset \
-	&& echo "Testing Gradle installation" \
-	&& gradle --version
+  && echo "Testing Gradle installation" \
+  && gradle --version
