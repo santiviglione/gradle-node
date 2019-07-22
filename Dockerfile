@@ -3,9 +3,9 @@ FROM openjdk:8-jdk-alpine
 CMD ["gradle"]
 
 ENV GRADLE_HOME /opt/gradle
-ENV GRADLE_VERSION 3.5
+ENV GRADLE_VERSION 5.5.1
 
-ARG GRADLE_DOWNLOAD_SHA256=0b7450798c190ff76b9f9a3d02e18b33d94553f708ebc08ebe09bdf99111d110
+ARG GRADLE_DOWNLOAD_SHA256=222a03fcf2fcaf3691767ce9549f78ebd4a77e73f9e23a396899fb70b420cd00
 RUN set -o errexit -o nounset \
 	&& echo "Installing dependencies" \
 	&& apk add --no-cache \
@@ -42,7 +42,7 @@ RUN set -o errexit -o nounset \
 
 
 ENV NPM_CONFIG_LOGLEVEL info
-ENV NODE_VERSION 6.11.0
+ENV NODE_VERSION 10.16.0
 
 RUN addgroup -g 1001 node \
     && adduser -u 1001 -G node -s /bin/sh -D node \
@@ -87,7 +87,7 @@ RUN addgroup -g 1001 node \
     && rm -Rf "node-v$NODE_VERSION" \
     && rm "node-v$NODE_VERSION.tar.xz" SHASUMS256.txt.asc SHASUMS256.txt
 
-ENV YARN_VERSION 0.24.6
+ENV YARN_VERSION 1.17.3
 
 RUN apk add --no-cache --virtual .build-deps-yarn curl gnupg tar \
   && for key in \
